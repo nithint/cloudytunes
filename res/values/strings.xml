@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, FolderListActivity!</string>
+    <string name="app_name">CloudyTunes</string>
+    <string name="media_play_error">Error playing the currently selected media.</string>
+    <string name="no_file_selected">No media selected.</string>
+</resources>
