@@ -62,26 +62,27 @@ public class NowPlayingService extends Service
 		toast.show();
 	}
 	
-	protected void playSong(String uri)
+	protected boolean playSong(String uri)
 	{
 		// get full url
 		String path = String.format(MediaRestAdapter.GET_MEDIA_URL,
 				Uri.encode(uri));
 		try
 		{
-			Notification notification = new Notification(
+			/*Notification notification = new Notification(
 					R.drawable.playbackstart, uri, System.currentTimeMillis());
 			nm.notify(NOTIFY_ID, notification);
-			
+			*/
 			player.reset();
 			player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			player.setDataSource(path);
 		    player.prepare();
 		    player.start();
-			
+			return true;
 		} catch (IOException e) {
 			showToast(getString(R.string.media_play_error), Toast.LENGTH_LONG);
 			Log.e(getString(R.string.app_name), e.getMessage());
+			return false;
 		}
 	}
 	
@@ -95,13 +96,14 @@ public class NowPlayingService extends Service
 		}
 	}
 	
-	private final NowPlayingServiceInterface.Stub mBinder = new NowPlayingServiceInterface.Stub()
+	private final NowPlayingServiceInterface.Stub mBinder = 
+		new NowPlayingServiceInterface.Stub()
 	{
 
 		@Override
-		public void playMedia(String uri) throws RemoteException
+		public boolean playMedia(String uri) throws RemoteException
 		{
-			playSong(uri);
+			return playSong(uri);
 		}
 
 		@Override
@@ -109,14 +111,14 @@ public class NowPlayingService extends Service
 		{
 			Notification notification = new Notification(
 					R.drawable.playbackpause, getCurrentMediaUri(),System.currentTimeMillis());
-			nm.notify(NOTIFY_ID, notification);
+			//nm.notify(NOTIFY_ID, notification);
 			player.pause();
 		}
 
 		@Override
 		public void stop() throws RemoteException
 		{
-			nm.cancel(NOTIFY_ID);
+			//nm.cancel(NOTIFY_ID);
 			player.stop();
 		}
 		

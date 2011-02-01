@@ -26,7 +26,12 @@ public class MediaPlayerActivity extends Activity
 		{
 			vpath = extras.getString(MediaRestAdapter.V_PATH);
 			
-			this.bindService(new Intent(this,NowPlayingService.class), serviceConn, Context.BIND_AUTO_CREATE);
+			this.bindService(
+					new Intent("com.nithin.cloudytunes.MediaService"), 
+					serviceConn, Context.BIND_AUTO_CREATE);
+			
+			 //this.bindService(new Intent(this,NowPlayingService.class), serviceConn, Context.BIND_AUTO_CREATE);
+			 
 			
 		}
 		else
@@ -47,7 +52,8 @@ public class MediaPlayerActivity extends Activity
 		{
 			try
 			{
-				npsInterface.playMedia(vpath);
+				if(!npsInterface.playMedia(vpath))
+					this.finish();
 			} catch (RemoteException e)
 			{
 				Toast toast = Toast.makeText(this, "Cannot connect to now playing service", Toast.LENGTH_LONG);
@@ -78,5 +84,6 @@ public class MediaPlayerActivity extends Activity
 	public void onDestroy()
 	{
 		super.onDestroy();
+		this.unbindService(serviceConn);
 	}
 }

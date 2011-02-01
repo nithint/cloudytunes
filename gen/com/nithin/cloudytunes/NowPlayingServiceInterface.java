@@ -47,8 +47,9 @@ case TRANSACTION_playMedia:
 data.enforceInterface(DESCRIPTOR);
 java.lang.String _arg0;
 _arg0 = data.readString();
-this.playMedia(_arg0);
+boolean _result = this.playMedia(_arg0);
 reply.writeNoException();
+reply.writeInt(((_result)?(1):(0)));
 return true;
 }
 case TRANSACTION_pause:
@@ -83,20 +84,23 @@ public java.lang.String getInterfaceDescriptor()
 {
 return DESCRIPTOR;
 }
-public void playMedia(java.lang.String uri) throws android.os.RemoteException
+public boolean playMedia(java.lang.String uri) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
+boolean _result;
 try {
 _data.writeInterfaceToken(DESCRIPTOR);
 _data.writeString(uri);
 mRemote.transact(Stub.TRANSACTION_playMedia, _data, _reply, 0);
 _reply.readException();
+_result = (0!=_reply.readInt());
 }
 finally {
 _reply.recycle();
 _data.recycle();
 }
+return _result;
 }
 public void pause() throws android.os.RemoteException
 {
@@ -131,7 +135,7 @@ static final int TRANSACTION_playMedia = (android.os.IBinder.FIRST_CALL_TRANSACT
 static final int TRANSACTION_pause = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
 static final int TRANSACTION_stop = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
 }
-public void playMedia(java.lang.String uri) throws android.os.RemoteException;
+public boolean playMedia(java.lang.String uri) throws android.os.RemoteException;
 public void pause() throws android.os.RemoteException;
 public void stop() throws android.os.RemoteException;
 }
